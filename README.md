@@ -107,6 +107,11 @@ Contribute by forking, tweaking, and sending pull requests, but please add the a
 
 ### History
 
+#### `0.1.1`
+
+* Completed `Rakefile`
+* Changed a method from private to public, specs are green again
+
 #### `0.1.0`
 
 * Initial release
