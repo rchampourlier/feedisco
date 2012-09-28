@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     "Gemfile",
     "Gemfile.lock",
+    "LICENSE",
     "README.md",
     "Rakefile",
     "VERSION",
@@ -28,7 +29,6 @@ Gem::Specification.new do |s|
     "lib/feedisco/discovery.rb",
     "lib/feedisco/utilities.rb",
     "lib/feedisco/version.rb",
-    "pkg/feedisco-0.1.0.gem",
     "script/console",
     "spec/fixtures/alternate.html",
     "spec/fixtures/no_link.html",
