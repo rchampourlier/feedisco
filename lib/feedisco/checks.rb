@@ -8,8 +8,6 @@ module Feedisco::Checks
     feed_content_type?(url)
   end
 
-  private
-  
   # Determines if the specified URL looks like a feed. We consider it does if:
   #   - it ends with a 'feed-suffix': .rdf, .xml, .rss
   #   - it contains a 'feed=rss' or 'feed=atom' query param (well, we don't check
@@ -18,7 +16,9 @@ module Feedisco::Checks
   def looks_like_feed?(url)
     (url =~ %r{(\.(rdf|xml|rss)$|feed=(rss|atom)(&(.)+)?$|(atom|feed)/?$)}i) != nil
   end
-  
+
+  private
+
   # Open the specified URL and check its content type. Returns true if the content type
   # is a feed content type (in Feedisco.feed_content_types)
   # 
