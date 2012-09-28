@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+# This small script runs an IRB console ready for Feedisco fun!
+# Be sure to run within a `bundle exec` if your using Bundler!
+
+require File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "feedisco.rb"))
+
+# prevent STDOUT & STDERR to be reopened (apps do this to be able to log under Passenger)
+def STDOUT.reopen(*args); end
+def STDERR.reopen(*args); end
+
+begin
+  require "pry"
+  Interpreter = Pry
+rescue LoadError
+  require "irb"
+  require "irb/completion"
+  Interpreter = IRB
+end
+
+# START
+Interpreter.start
