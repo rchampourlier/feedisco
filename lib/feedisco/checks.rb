@@ -31,7 +31,7 @@ module Feedisco::Checks
       file = open(harmonized_url)
       opened = true
     
-    elsif url_or_file.class.to_s == 'Tempfile'
+    elsif %w(Tempfile StringIO).include? url_or_file.class.to_s
       file = url_or_file
     
     else raise ArgumentError.new('argument must be a String (url) or a Tempfile created with `open(url)`')
