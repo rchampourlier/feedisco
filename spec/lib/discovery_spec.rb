@@ -19,16 +19,19 @@ describe "Feedisco::Discovery" do
 
     context 'from fixtures' do
 
-      it 'should return an empty array' do
-        file = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', 'no_link.html'))
+      def file_for_fixture(fixture_file_name)
+        file = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', fixture_file_name))
         file.stub!(:class => stub(:to_s => 'Tempfile'), :content_type => 'text/html')
+        file
+      end
 
-        Feedisco.should_receive(:open).and_yield(file)
+      it 'should return an empty array' do
+        Feedisco.should_receive(:open).and_yield(file_for_fixture 'no_link.html')
         Feedisco.find('example.com').should == []
       end
 
       it 'should include the alternate link' do
-        file = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', 'alternate.html'))
+        file = file_for_fixture 'alternate.html'
         file.stub!(:class => stub(:to_s => 'Tempfile'), :content_type => 'text/html')
 
         Feedisco.should_receive(:open).and_yield(file)
@@ -36,40 +39,35 @@ describe "Feedisco::Discovery" do
       end
 
       it 'should include a <a> link in the body' do
-        file = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', 'one_link_in_body.html'))
-        file.stub!(:class => stub(:to_s => 'Tempfile'), :content_type => 'text/html')
+        file = file_for_fixture 'one_link_in_body.html'
 
         Feedisco.should_receive(:open).and_yield(file)
         Feedisco.find('example.com').should include("http://example.com/feed.rss")
       end
 
       it 'should include link to feeds on the URL\'s domain' do
-        file = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', 'several_links.html'))
-        file.stub!(:class => stub(:to_s => 'Tempfile'), :content_type => 'text/html')
+        file = file_for_fixture 'several_links.html'
 
         Feedisco.should_receive(:open).and_yield(file)
         Feedisco.find('example.com').should include("http://example.com/feed.rss")
       end
 
       it 'should have the alternate link as the first of the returned feed' do
-        file = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', 'several_links.html'))
-        file.stub!(:class => stub(:to_s => 'Tempfile'), :content_type => 'text/html')
+        file = file_for_fixture 'several_links.html'
 
         Feedisco.should_receive(:open).and_yield(file)
         Feedisco.find('example.com').first.should == "http://example.com/feed.xml"
       end
 
       it 'should include link to feeds on other domains' do
-        file = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', 'several_links.html'))
-        file.stub!(:class => stub(:to_s => 'Tempfile'), :content_type => 'text/html')
+        file = file_for_fixture 'several_links.html'
 
         Feedisco.should_receive(:open).and_yield(file)
         Feedisco.find('example.com').should include "http://another.domain.com/feed.rss"
       end
 
       it 'should have links to feeds on other domains after links to feeds on the same domain' do
-        file = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', 'several_links.html'))
-        file.stub!(:class => stub(:to_s => 'Tempfile'), :content_type => 'text/html')
+        file = file_for_fixture 'several_links.html'
 
         Feedisco.should_receive(:open).and_yield(file)
         feeds = Feedisco.find('example.com')
@@ -77,12 +75,17 @@ describe "Feedisco::Discovery" do
       end
 
       it 'should include each link only once' do
-        file = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', 'several_links.html'))
-        file.stub!(:class => stub(:to_s => 'Tempfile'), :content_type => 'text/html')
+        file = file_for_fixture 'several_links.html'
 
         Feedisco.should_receive(:open).and_yield(file)
         feeds = Feedisco.find('example.com')
         feeds.select { |f| f == 'http://example.com/feed.rss' }.count.should == 1
+      end
+
+      it "should complete a relative link" do
+        Feedisco.should_receive(:open).and_yield(file_for_fixture 'several_links.html')
+        feeds = Feedisco.find('example.com')
+        feeds.should include 'http://example.com/feed.rss'
       end
     end
 
