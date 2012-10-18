@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "feedisco"
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Romain Champourlier"]
-  s.date = "2012-09-28"
+  s.date = "2012-10-18"
   s.description = "Feedisco is a small and lightweight library focused on RSS/Atom feed discovery. It is intended to do little, but to do it well!"
   s.email = "romain@softr.li"
   s.extra_rdoc_files = [
