@@ -2,3 +2,4 @@
 bin*
 vendor/bundle*
 *.DS_Store
+pkg*
