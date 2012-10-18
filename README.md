@@ -107,6 +107,10 @@ Contribute by forking, tweaking, and sending pull requests, but please add the a
 
 ### History
 
+#### `0.1.3`
+
+* Corrected bug causing some links to appear several times in the result.
+
 #### `0.1.2`
 
 * Supports `StringIO` as a return from the open-uri `open` method (which is returned instead of a `Tempfile` when the content is smaller than a given size - 10KB).
